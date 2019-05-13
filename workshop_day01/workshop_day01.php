@@ -12,11 +12,20 @@
  * Domain Path: 	/languages
  */
 
-function ws_shortcode() {
+function ws_shortcode($atts = [], $content = null, $tag = '') {
+
+	// normalize attribute keys, lowercase
+	$atts = array_change_key_case((array)$atts, CASE_LOWER);
+	
+	// override default attributes with user attributes
+    $ws_atts = shortcode_atts([
+		'posts' => 3,
+	], $atts, $tag);
 	
 
+
 	$posts = new WP_Query([
-		'posts_per_page' => 3,
+		'posts_per_page' => $ws_atts['posts'],
 	]);
 
 	$output = "<h2>Latest Posts</h2>";
