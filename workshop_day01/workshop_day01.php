@@ -1,18 +1,20 @@
 <?php
 /**
- * Plugin Name: 	My First Plugin
+ * Plugin Name: 	Workshop _Day 01
  * Plugin URI: 		http://lutefisk-development.se
- * Description: 	This is my first plugin, it does not do much.
+ * Description: 	This is the first workshop of this course.
  * Version: 		0.1
  * Author: 			Per Kristian Svanberg
  * Author URI: 		http://lutefisk-development.se
  * License: 		WTFPL
  * License URI: 	http:// wtfpl.net
- * Text Domain: 	myfirstplugin
+ * Text Domain: 	workshop_day01
  * Domain Path: 	/languages
  */
 
-function wlp_shortcode() {
+function ws_shortcode() {
+	
+
 	$posts = new WP_Query([
 		'posts_per_page' => 3,
 	]);
@@ -36,7 +38,7 @@ function wlp_shortcode() {
 	return $output;
 }
 
-function wlp_init() {
-	add_shortcode('latest-post', 'wlp_shortcode');
+function ws_init() {
+	add_shortcode('my-latest-posts', 'ws_shortcode');
 }
-add_action('init', 'wlp_init');
+add_action('init', 'ws_init');
