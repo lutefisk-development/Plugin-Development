@@ -22,8 +22,6 @@ function ws_shortcode($atts = [], $content = null, $tag = '') {
 		'posts' => 3,
 	], $atts, $tag);
 	
-
-
 	$posts = new WP_Query([
 		'posts_per_page' => $ws_atts['posts'],
 	]);
@@ -37,6 +35,8 @@ function ws_shortcode($atts = [], $content = null, $tag = '') {
 			$output .= "<a href='" . get_the_permalink() . "'>";
 			$output .= get_the_title();
 			$output .= "</a>";
+			$output .= get_the_content();
+			$output .= "<p>By: " . get_the_author() . " - Posted " . get_the_date('F j, Y') . " at " . get_the_time('g:i a') . "</p>";
 			$output .= "</li>";
 		}
 		wp_reset_postdata();
