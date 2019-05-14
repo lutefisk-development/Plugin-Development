@@ -56,3 +56,46 @@ function ws_init() {
 	add_shortcode('my-latest-posts', 'ws_shortcode');
 }
 add_action('init', 'ws_init');
+
+
+/**
+ * FACIT:
+ * 
+ * 
+ * 		function wlp_shortcode($user_atts = [], $content = null, $tag = '') {
+ * 			$dafault_atts = [
+ * 				'posts' => 3,
+ * 				'title' => __('Senaste Nytt', 'workshop_day01'),
+ * 			];
+ * 
+ * 			$atts = shortcode_atts($default_atts, $user_atts, $tag);
+ * 
+ *			$posts = new WP_Query([
+ *				'posts_per_page' => $atts['posts'],
+ *			]);
+
+ *			$output = "<h2>" . $atts['title'] . "</h2>";
+ *			if ($posts->have_posts()) {
+ *				$output .= "<ul>";
+ *				while ($posts->have_posts()) {
+ *					$posts->the_post();
+ *					$output .= "<li>";
+ *					$output .= "<a href='" . get_the_permalink() . "'>";
+ *					$output .= get_the_title();
+ *	 				$output .= "</a>";
+ *					$output .= human_time_diff(get_the_time('U')) . ' ago';
+ *					$output .= "</li>";
+ *				}
+ *				wp_reset_postdata();
+ *				$output .= "</ul>";
+ *			} else {
+ *				$output .= "No latest posts available.";
+ *			}
+ *			return $output;
+ *		}
+ *		function wlp_init() {
+ *			add_shortcode('latest-posts', 'wlp_shortcode');
+ *		}
+ *		add_action('init', 'wlp_init');
+
+ */
