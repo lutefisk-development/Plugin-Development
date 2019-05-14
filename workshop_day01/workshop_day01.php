@@ -36,6 +36,7 @@ function ws_shortcode($atts = [], $content = null, $tag = '') {
 			$output .= get_the_title();
 			$output .= "</a>";
 
+			// Loop over all categories and output each linked to a spesific post
 			$categories = get_the_category($post->ID);
 			foreach ($categories as $category) {
 				$output .= "<br>" . $category->name;
