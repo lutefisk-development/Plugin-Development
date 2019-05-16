@@ -53,9 +53,12 @@ class LatestPostWidget extends WP_Widget {
 				$output .= "<a href='" . get_the_permalink() . "'>";
 				$output .= get_the_title();
 				$output .= "</a>";
-				$output .= " by " . get_the_author() . " ";
-				$output .= human_time_diff(get_the_time('U')) . ' ago';
-				$output .= "</li>";
+
+				if($instance['show_author']) {
+					$output .= " by " . get_the_author() . " ";
+					$output .= human_time_diff(get_the_time('U')) . ' ago';
+					$output .= "</li>";
+				}
 			}
 			wp_reset_postdata();
 			$output .= "</ul>";
@@ -89,6 +92,10 @@ class LatestPostWidget extends WP_Widget {
 		} else {
 			$content = 3;
 		}
+
+		$show_author = isset($instance['show_author'])
+			? $instance['show_author']
+			: false;
 		?>
 
 		<!-- title -->
@@ -121,6 +128,7 @@ class LatestPostWidget extends WP_Widget {
 				id="<?php echo $this->get_field_id('content'); ?>"
 				name="<?php echo $this->get_field_name('content'); ?>"
 				type="number"
+				min="1"
 				value="<?php echo esc_attr($content); ?>"
 			/>
 		 </p>
@@ -129,17 +137,18 @@ class LatestPostWidget extends WP_Widget {
 		 <!-- checkbox -->
 		 <p>
 		 	<label 
-				for="<?php echo $this->get_field_name('author'); ?>"
+				for="<?php echo $this->get_field_name('show_author'); ?>"
 			>
-				<?php _e('Do you want to show the author (if checked yes)', 'latestpostwidget'); ?>
+				<?php _e('Show the Author?', 'latestpostwidget'); ?>
 			</label>
 
 			<input 
 				class="widefat" 
-				id="<?php echo $this->get_field_id('author'); ?>"
-				name="<?php echo $this->get_field_name('author'); ?>"
+				id="<?php echo $this->get_field_id('show_author'); ?>"
+				name="<?php echo $this->get_field_name('show_author'); ?>"
 				type="checkbox" 
-				value="<?php echo $author; ?>"
+				value="1"
+				<?php echo $show_author ? 'checked="checked"' : ''; ?>
 			/>
 		 </p>
 		 <!-- /checkbox -->
@@ -161,9 +170,14 @@ class LatestPostWidget extends WP_Widget {
 		$instance['title'] = (!empty($new_instance['title']))
 			? strip_tags($new_instance['title'])
 			: '';
-		$instance['content'] = !empty($new_instance['content'])
-			? $new_instance['content']
-			: '';
+		
+			$instance['content'] = (!empty($new_instance['content']) && $new_instance['content'] > 0)
+			? intval($new_instance['content'])
+			: 3;
+
+			$instance['show_author'] = (!empty($new_instance['show_author']))
+			? true
+			: false;
 
 		return $instance;
 	}
