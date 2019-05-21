@@ -44,6 +44,7 @@ class WCMS18 extends WP_Widget {
 			// content
 			echo wrlp_get_latest_posts([
 				'posts' => $instance['num_posts'],
+				'categories' => $instance['categories'],
 				'show_metadata' => $instance['show_metadata'],
 				'title' => false,
 			]);
@@ -75,6 +76,13 @@ class WCMS18 extends WP_Widget {
 			$num_posts = 3;
 		}
 
+		// visa vilka kategorier man önskar.
+		if (isset($instance['categories'])) {
+			$categories = $instance['categories'];
+		} else {
+			$categories = ''; 
+		}
+
 		$show_metadata = isset($instance['show_metadata'])
 			? $instance['show_metadata']
 			: false;
@@ -102,21 +110,39 @@ class WCMS18 extends WP_Widget {
 		 <!-- content -->
 		 <p>
 			<label
-				for="<?php echo $this->get_field_name('content'); ?>"
+				for="<?php echo $this->get_field_name('num_posts'); ?>"
 			>
 				<?php _e('How many posts to show: ', 'wcms18-relatedposts'); ?>
 			</label>
 
 			<input
 				class="widefat"
-				id="<?php echo $this->get_field_id('content'); ?>"
-				name="<?php echo $this->get_field_name('content'); ?>"
+				id="<?php echo $this->get_field_id('num_posts'); ?>"
+				name="<?php echo $this->get_field_name('num_posts'); ?>"
 				type="number"
 				min="1"
-				value="<?php echo esc_attr($content); ?>"
+				value="<?php echo esc_attr($num_posts); ?>"
 			/>
 		 </p>
 		 <!-- /content -->
+
+		 <!-- categories -->
+		 <p>
+			<label
+				for="<?php echo $this->get_field_name('categories'); ?>"
+			>
+				<?php _e('Which categories to show', 'wcms18-relatedposts'); ?>
+			</label>
+
+			<input
+				class="widefat"
+				id="<?php echo $this->get_field_id('categories'); ?>"
+				name="<?php echo $this->get_field_name('categories'); ?>"
+				type="text"
+				value="<?php echo esc_attr($categories); ?>"
+			/>
+		 </p>
+		 <!-- /categories -->
 
 		 <!-- show metadata about post -->
 		<p>
@@ -157,6 +183,9 @@ class WCMS18 extends WP_Widget {
 		$instance['num_posts'] = (!empty($new_instance['num_posts']) && $new_instance['num_posts'] > 0)
 			? intval($new_instance['num_posts'])
 			: 3;
+		$instance['categories'] = (!empty($new_instance['categories']))
+			? strip_tags($new_instance['categories'])
+			: '';
 		$instance['show_metadata'] = (!empty($new_instance['show_metadata']));
 		return $instance;
 	}

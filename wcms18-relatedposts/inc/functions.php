@@ -39,16 +39,18 @@ function wrlp_get_latest_posts($user_atts = [], $content = null, $tag = '') {
 			$output .= "<a href='" . get_the_permalink() . "'>";
 			$output .= get_the_title();
 			$output .= "</a>";
-
-			$output .= "<small>";
-			$output .= " in ";
-			$output .= get_the_category_list(', ');
-			$output .= " by ";
-			$output .= get_the_author();
-			$output .= " ";
-			$output .= human_time_diff(get_the_time('U')) . ' ago';
-			$output .= "</small>";
-
+			
+			if($atts['show_metadata']) {
+				$output .= "<small>";
+				$output .= " in ";
+				$output .= get_the_category_list(', ');
+				$output .= " by ";
+				$output .= get_the_author();
+				$output .= " ";
+				$output .= human_time_diff(get_the_time('U')) . ' ago';
+				$output .= "</small>";
+			}
+			
 			$output .= "</li>";
 		}
 		wp_reset_postdata();
