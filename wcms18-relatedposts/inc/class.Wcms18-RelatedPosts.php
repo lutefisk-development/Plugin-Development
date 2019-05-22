@@ -28,28 +28,30 @@ class WCMS18 extends WP_Widget {
 	 * @param array $instance Saved values from database.
 	 */
 	public function widget($args, $instance) {
+		
+		// returns null if it's a archive and not a single post.
+		if(!is_single()) {
+			return;
+		}
+
 		extract($args);
 		$title = apply_filters('widget_title', $instance['title']);
 		
 		// start widget
 		echo $before_widget;
-
-		if(is_single()){
 		
-			// title
-			if (! empty($title)) {
-				echo $before_title . $title . $after_title;
-			}
-			
-			// content
-			echo wrlp_get_latest_posts([
-				'posts' => $instance['num_posts'],
-				'categories' => $instance['categories'],
-				'show_metadata' => $instance['show_metadata'],
-				'title' => false,
-			]);
-
+		// title
+		if (! empty($title)) {
+			echo $before_title . $title . $after_title;
 		}
+			
+		// content
+		echo wrlp_get_latest_posts([
+			'posts' => $instance['num_posts'],
+			'categories' => $instance['categories'],
+			'show_metadata' => $instance['show_metadata'],
+			'title' => false,
+		]);
 
 		// close widget
 		echo $after_widget;
@@ -66,7 +68,7 @@ class WCMS18 extends WP_Widget {
 		if (isset($instance['title'])) {
 			$title = $instance['title'];
 		} else {
-			$title = __('Related Posts', 'wcms18-relatedposts');
+			$title = get_option('wrp_default_title', __('Related Posts', 'wcms18-relatedposts'));
 		}
 
 		// antal poster, om inget är satt blir det 3 som visas

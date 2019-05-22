@@ -23,7 +23,7 @@ function wrlp_get_latest_posts($user_atts = [], $content = null, $tag = '') {
 
 	$posts = new WP_Query([
 		'posts_per_page' => $atts['posts'],
-		'post__not_in' => [$current_post_id],
+		'post__not_in' => [$atts['posts']],
 		'category__in' => (!empty($atts['categories'])) ? explode(',', $atts['categories']) : $category_ids,
 	]);
 
