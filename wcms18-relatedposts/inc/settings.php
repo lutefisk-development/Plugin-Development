@@ -40,10 +40,10 @@ function wrp_settings_page() {
 //register all options for our settings page.
 function wrp_settings_init() {
 	add_settings_section(
-		'wrp_general_options', 
-		'General Options', 
-		'wrp_general_options_section', 
-		'relatedposts'
+		'wrp_general_options', 					// id
+		'General Options', 						// section title
+		'wrp_general_options_section', 			// callback for rendering content below title and above settings fields
+		'relatedposts'							// page to add this settings section to
 	);
 
 	/**
@@ -52,22 +52,22 @@ function wrp_settings_init() {
 
 	//
 	add_settings_field(
-		'wrp_add_to_posts', 
-		'Add Related Posts to all posts', 
-		'wrp_add_to_posts_cb', 
-		'relatedposts', 
-		'wrp_general_options' 
+		'wrp_add_to_posts', 					// id
+		'Add Related Posts to all posts', 		// label
+		'wrp_add_to_posts_cb', 					// callback for rendering form field
+		'relatedposts', 						// page to add settings field to
+		'wrp_general_options' 					// section to add settings field to
 	);
 
 	register_setting('wrp_general_options', 'wrp_add_to_posts');
 
 	//default title
 	add_settings_field(
-		'wrp_default_title', 
-		'Default Title', 
-		'wrp_add_to_title_cb', 
-		'relatedposts', 
-		'wrp_general_options' 
+		'wrp_default_title', 			// id
+		'Default Title', 				// label
+		'wrp_add_to_title_cb', 			// callback for rendering form field
+		'relatedposts', 				// page to add settings field to
+		'wrp_general_options' 			// section to add settings field to
 	);
 
 	register_setting('wrp_general_options', 'wrp_default_title');
