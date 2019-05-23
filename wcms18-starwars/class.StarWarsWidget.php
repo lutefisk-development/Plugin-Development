@@ -40,23 +40,37 @@ class StarWarsWidget extends WP_Widget {
 		}
 
 		// content
-		$result = wp_remote_get('https://swapi.co/api/films');
-		if($result['response']['code'] === 200) {
-			$data = json_decode($result['body']);
+		$films = swapi_get_films();
+		if($films) {
+			echo "<ul>";
 
-			if($data->count > 0) {
-				echo "<ul>";
-				foreach($data->results as $film) {
-					echo "<li>{$film->title}</li>";
+			$species = [];
+			foreach($films as $film) {
+				foreach($film->species as $specie_id) {
+					$specie_id = explode("/", $specie_id)[5];
+					$specie = swapi_get_species($specie_id);
+					array_push($species, $specie->name);
 				}
-				echo "</ul>";
-			}
+				
+				?>
+				
+					<li>
+						<?php echo $film->title; ?><br>
+						<small>
+							Director: <?php echo $film->director; ?><br>
+							Release Date: <?php echo $film->release_date; ?><br>
+							Species in this movie: <?php echo implode(", ", $species); ?><br>
+						</small>
+						<br>
+					</li>
 
+				<?php
+			}
+			echo "</ul>";
 		} else {
 			echo 'Something went wrong!';
 		}
 		
-
 		// close widget
 		echo $after_widget;
 	}
