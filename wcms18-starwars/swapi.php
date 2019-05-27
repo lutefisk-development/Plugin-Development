@@ -77,3 +77,11 @@ function swapi_get_character($character_id) {
 	return swapi_get('people', $character_id);
 }
 
+function swapi_get_species() {
+	return swapi_get('species');
+}
+
+function swapi_get_specie($specie_id) {
+	return swapi_get('species', $specie_id);
+}
+
