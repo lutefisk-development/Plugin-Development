@@ -40,15 +40,24 @@ class WeatherWidget extends WP_Widget {
 		}
 
 		// content
-		$current_weather = w18ww_owm_get_current_weather($instance['city'], $instance['country']);
-		
-		echo '<div class="weather-conditions">';
-		foreach($current_weather['conditions'] as $condition) {
-			echo '<img src="http://openweathermap.org/img/w/' . $condition->icon . '.png" title="' . $condition->description . '" alt="' . $condition->main . '">';
-		}
-		echo '</div>';
-		echo "<strong>Temperature:</strong> " . $current_weather['temperature'] . "&deg; C<br>";
-		echo "<strong>Humidity:</strong> " . $current_weather['humidity'] . "%<br>";
+		$city = $instance['city'];
+		$country = $instance['country'];
+
+		?>
+			<div class="current-weather">
+				<small>Loading .... </small>
+			</div>
+
+			<script>
+				jQuery(document).ready(function(){
+					w18ww_get_current_weather(
+						'<?php echo $widget_id ?>', 
+						'<?php echo $city ?>', 
+						'<?php echo $country ?>',
+					);
+				});
+			</script>
+		<?php
 		
 		// close widget
 		echo $after_widget;

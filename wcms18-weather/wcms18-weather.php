@@ -36,8 +36,8 @@ add_action('wp_enqueue_scripts', 'w18ww_enqueue_styles');
  */
 
 function w18ww_ajax_get_current_weather() {
-	wp_send_json(w18ww_owm_get_current_weather('Lund', 'SE'));
-	wp_die();
+
+	wp_send_json(w18ww_owm_get_current_weather($_POST['city'], $_POST['country']));
 }
 add_action('wp_ajax_get_current_weather', 'w18ww_ajax_get_current_weather');
 add_action('wp_ajax_nopriv_get_current_weather', 'w18ww_ajax_get_current_weather');

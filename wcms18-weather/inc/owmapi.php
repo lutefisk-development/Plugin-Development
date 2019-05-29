@@ -3,10 +3,12 @@
  * Function for communicationg with the Open Weather API
  */
 
+define('OWM_APP_ID', '5ae275d1a0023fc435486dc31a45cd67');
+
 function w18ww_owm_get_current_weather($city, $country) {
 	
 	// get current weather
-	$response = wp_remote_get("http://api.openweathermap.org/data/2.5/weather?q={$city},{$country}&units=metric&appid=5ae275d1a0023fc435486dc31a45cd67");
+	$response = wp_remote_get("http://api.openweathermap.org/data/2.5/weather?q={$city},{$country}&units=metric&appid=" . OWM_APP_ID);
 	
 	// make sure get valid response
 	if(is_wp_error($response) || wp_remote_retrieve_response_code($response) !== 200) {
