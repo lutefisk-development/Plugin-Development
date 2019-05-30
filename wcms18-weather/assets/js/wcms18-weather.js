@@ -20,9 +20,14 @@ function w18ww_get_current_weather(widget_id, widget_city, widget_country) {
 		},
 
 		function (data) {
-			// console.log("GOT RESPONSE for widget " + widget_id + "!!!! YAY!!", data);
+
 			var output = "";
-			console.log(data.conditions);
+			output += '<h3>City: ' + widget_city + ' - Country: ' + widget_country + '</h3>';
+			for (let i = 0; i < data.conditions.length; i++) {
+
+				output += '<img src="http://openweathermap.org/img/w/' + data.conditions[i].icon + '.png" title="' + data.conditions[i].description + '" alt="' + data.conditions[i].main + '"><br>';
+
+			}
 			output += '<strong>Temperature:</strong> ' + data.temperature + '&deg; C<br>';
 			output += '<strong>Humidity:</strong> ' + data.humidity + '%<br>';
 			jQuery('#' + widget_id + ' .current-weather').html(output);
