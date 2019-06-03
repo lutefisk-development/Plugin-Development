@@ -44,19 +44,23 @@ class WeatherWidget extends WP_Widget {
 		$country = $instance['country'];
 
 		?>
-			<div class="current-weather">
-				<small>Loading .... </small>
+			<div 
+				class="current-weather" 
+				data-city="<?php echo $city; ?>" 
+				data-country="<?php echo $country; ?>"
+			>
+				<em><small>Loading .... </small></em>
 			</div>
 
-			<script>
+			<!-- <script>
 				jQuery(document).ready(function(){
 					w18ww_get_current_weather(
-						'<?php echo $widget_id ?>', 
-						'<?php echo $city ?>', 
-						'<?php echo $country ?>',
+						'<?php //echo $widget_id ?>', 
+						'<?php //echo $city ?>', 
+						'<?php //echo $country ?>',
 					);
 				});
-			</script>
+			</script> -->
 		<?php
 		
 		// close widget
@@ -168,4 +172,4 @@ class WeatherWidget extends WP_Widget {
 		return $instance;
 	}
 
-} // class StarWarsWidget
+} // class WeatherWidget

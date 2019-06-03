@@ -37,7 +37,12 @@ add_action('wp_enqueue_scripts', 'w18ww_enqueue_styles');
 
 function w18ww_ajax_get_current_weather() {
 
-	wp_send_json(w18ww_owm_get_current_weather($_POST['city'], $_POST['country']));
+	$current_weather_request = w18ww_owm_get_current_weather($_POST['city'], $_POST['country']);
+	if ($current_weather_request['success']) {
+		wp_send_json_success($current_weather_request['data']);
+	} else {
+		wp_send_json_error($current_weather_request['error']);
+	}
 }
 add_action('wp_ajax_get_current_weather', 'w18ww_ajax_get_current_weather');
 add_action('wp_ajax_nopriv_get_current_weather', 'w18ww_ajax_get_current_weather');
