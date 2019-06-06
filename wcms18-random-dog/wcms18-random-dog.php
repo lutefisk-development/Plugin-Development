@@ -38,6 +38,13 @@ if ( ! defined( 'WPINC' ) ) {
 define( 'WCMS18_RANDOM_DOG_VERSION', '1.0.0' );
 
 /**
+ * Define a constant for API url.
+ */
+define( 'WCMS18_RANDOM_DOG__GET_URL', 'https://random.dog/woof.json' );
+
+
+
+/**
  * The code that runs during plugin activation.
  * This action is documented in includes/class-wcms18-random-dog-activator.php
  */

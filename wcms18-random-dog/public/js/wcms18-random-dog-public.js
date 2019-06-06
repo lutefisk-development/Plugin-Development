@@ -29,5 +29,38 @@
 	 * practising this, we should strive to set a better example in our own work.
 	 */
 
-	$(document).ready(function() {});
+	$(document).ready(function() {
+		$(".widget_wcms18-random-dog .content").each(function(i, widget) {
+			$.post(my_ajax_obj.ajax_url, {
+				action: "wcms18_random_dog__get"
+			})
+				.done(function(response) {
+					let output = "";
+					if (response) {
+						if (response.data["is_video"]) {
+							output += "<h1>A cute DOGGO vid</h1>";
+							output +=
+								"<video src=" + response.data["src"] + " controls></video>";
+						} else {
+							output += "<h1>A cute DOGGO picture</h1>";
+							output += "<img src=" + response.data["src"] + ">";
+						}
+					} else {
+						if (response.data == 404) {
+							output += "Could not find doggies.";
+						} else {
+							output += "Something went wrong, please try again 😅.";
+						}
+					}
+					$(widget).html(output);
+				})
+				.fail(function(error) {
+					var output = "Unknown error";
+					if (error.status == 404) {
+						output = "Could not find doggo.";
+					}
+					$(widget).html(output);
+				});
+		});
+	});
 })(jQuery);

@@ -79,6 +79,12 @@ class Wcms18_Random_Dog {
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
 
+		//register widget
+		$this->register_widget();
+
+		//register ajax actions
+		$this->register_ajax_actions();
+
 	}
 
 	/**
@@ -104,6 +110,11 @@ class Wcms18_Random_Dog {
 		 * core plugin.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wcms18-random-dog-loader.php';
+
+		/**
+		 * The class responsible for the widget of the plugin 
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wcms18-random-dog-widget.php';
 
 		/**
 		 * The class responsible for defining internationalization functionality
@@ -173,6 +184,69 @@ class Wcms18_Random_Dog {
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 
+	}
+
+	/**
+	 * Register the widget
+	 * @since    1.0.0
+	 */
+	public function register_widget() {
+		add_action('widgets_init', function(){
+			register_widget('Wcms18_Random_Dog_Widget');
+		});
+	}
+
+	/**
+	 * Register the ajax actions
+	 * @since    1.0.0
+	 */
+	public function register_ajax_actions() {
+		// register action 'wcms18_random_dog__get'
+		add_action('wp_ajax_wcms18_random_dog__get', [
+			$this, 
+			'ajax_wcms18_random_dog__get',
+		]);
+		add_action('wp_ajax_nopriv_wcms18_random_dog__get', [
+			$this, 
+			'ajax_wcms18_random_dog__get',
+		]);
+	}
+
+	/**
+	 * Respond to ajax action 'wcms18_random_dog__get'
+	 */
+	public function ajax_wcms18_random_dog__get(){
+		$response = wp_remote_get(WCMS18_RANDOM_DOG__GET_URL);
+		
+		if(is_wp_error($response) || wp_remote_retrieve_response_code($response) !== 200){
+			wp_send_json_error([
+				'error_code' => wp_remote_retrieve_response_code($response),
+				'error_msg' => wp_remote_retrieve_response_message($response),
+			]);
+		}
+
+		$body = json_decode(wp_remote_retrieve_body($response));
+
+		// easy way:
+		$is_video = in_array(
+			strtolower(
+				pathinfo(
+					parse_url(
+						$body->url, 
+						PHP_URL_PATH
+					), 
+					PATHINFO_EXTENSION
+				)
+			), ['mp4', 'ogv', 'avi', 'webm']
+		);
+		
+		// $body->url // ger url 
+		wp_send_json_success([
+			'type' => $is_video ? 'video' : 'image',
+			'is_video' => $is_video,
+			'is_image' => !$is_video,
+			'src' => $body->url
+ 		]);
 	}
 
 	/**

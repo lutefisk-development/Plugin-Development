@@ -44,10 +44,8 @@ class Wcms18_Random_Dog_Widget extends WP_Widget {
 		?>
 
 			<div
-				class="trivia"
-				data-trivia="<?php echo $trivia; ?>"
-			>
-				<em><strong>Loading ... </strong></em>
+				class="content">
+				<marquee behavior="alternate" direction=""><em><strong>Loading ... </strong></em></marquee>
 			</div>
 
 		<?php
@@ -70,10 +68,6 @@ class Wcms18_Random_Dog_Widget extends WP_Widget {
 			$title = __('Random Dog', 'wcms18-random-dog');
 		}
 
-		$trivia = isset($instance['trivia'])
-			? $instance['trivia']
-			: false;
-
 		?> <!-- /php -->
 
 		<!-- title -->
@@ -93,29 +87,6 @@ class Wcms18_Random_Dog_Widget extends WP_Widget {
 			/>
 		</p>
 		<!-- /title -->
-
-		<!-- show trivia -->
-		<p>
-			<label
-				for="<?php echo $this->get_field_name('trivia'); ?>"
-			>
-				<?php _e('List what?'); ?>
-			</label>
-
-			<select
-				class="widefat"
-				id="<?php echo $this->get_field_id('trivia'); ?>"
-				name="<?php echo $this->get_field_name('trivia'); ?>"
-			>
-				<option value="films" <?php echo $trivia == "films" ? "selected" : "" ?>>Films</option>
-				<option value="planets" <?php echo $trivia == "planets" ? "selected" : "" ?>>Planets</option>
-				<option value="vehicles" <?php echo $trivia == "vehicles" ? "selected" : "" ?>>Vehicles</option>
-				<option value="species" <?php echo $trivia == "species" ? "selected" : "" ?>>Species</option>
-				<option value="people" <?php echo $trivia == "people" ? "selected" : "" ?>>Characters</option>
-				<option value="starships" <?php echo $trivia == "starships" ? "selected" : "" ?>>Starships</option>
-			</select>
-		</p>
-		<!-- /show trivia -->
 
 	<?php
 	}
@@ -137,7 +108,6 @@ class Wcms18_Random_Dog_Widget extends WP_Widget {
 			? strip_tags($new_instance['title'])
 			: '';
 
-		$instance['trivia'] = $new_instance['trivia'];
 		return $instance;
 	}
 
