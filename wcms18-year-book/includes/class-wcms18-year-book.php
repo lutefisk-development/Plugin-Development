@@ -79,6 +79,13 @@ class Wcms18_Year_Book {
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
 
+		$this->register_filter_the_content();
+		$this->add_action_init();
+		
+		// following line either shows or hides the ACF meny option in dashboard:
+		// $this->add_acf_init();
+
+
 	}
 
 	/**
@@ -121,6 +128,12 @@ class Wcms18_Year_Book {
 		 * side of the site.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wcms18-year-book-public.php';
+
+		/**
+		 * Includes ACF plugin
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/acf/acf.php';
+
 
 		$this->loader = new Wcms18_Year_Book_Loader();
 
@@ -174,6 +187,159 @@ class Wcms18_Year_Book {
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 
 	}
+
+	/**
+	 * Add functions to be run during 
+	 *
+	 * @since    1.0.0
+	 */
+	public function add_action_init() {
+		add_action('init', [$this, 'register_cpts']);
+		add_action('init', [$this, 'register_cts']);
+	}
+
+	public function register_cts(){
+		
+		/**
+		 * Taxonomy: Studies.
+		 */
+		
+		$labels = array(
+			"name" => __( "Studies", "hestia" ),
+			"singular_name" => __( "Study", "hestia" ),
+		);
+		
+		$args = array(
+			"label" => __( "Studies", "hestia" ),
+			"labels" => $labels,
+			"public" => true,
+			"publicly_queryable" => true,
+			"hierarchical" => true,
+			"show_ui" => true,
+			"show_in_menu" => true,
+			"show_in_nav_menus" => true,
+			"query_var" => true,
+			"rewrite" => array( 'slug' => 'studies', 'with_front' => true, ),
+			"show_admin_column" => false,
+			"show_in_rest" => true,
+			"rest_base" => "studies",
+			"rest_controller_class" => "WP_REST_Terms_Controller",
+			"show_in_quick_edit" => false,
+			);
+		register_taxonomy( "studies", array( "w18yb_student" ), $args );
+		
+	}
+
+	/**
+	 * 
+	 *
+	 * @since    1.0.0
+	 */
+	public function register_cpts() {
+		
+		/**
+		 * Post Type: Students.
+		 */
+		
+		$labels = array(
+			"name" => __( "Students", "hestia" ),
+			"singular_name" => __( "Student", "hestia" ),
+		);
+		
+		$args = array(
+			"label" => __( "Students", "hestia" ),
+			"labels" => $labels,
+			"description" => "",
+			"public" => true,
+			"publicly_queryable" => true,
+			"show_ui" => true,
+			"delete_with_user" => false,
+			"show_in_rest" => true,
+			"rest_base" => "",
+			"rest_controller_class" => "WP_REST_Posts_Controller",
+			"has_archive" => true,
+			"show_in_menu" => true,
+			"show_in_nav_menus" => false,
+			"exclude_from_search" => false,
+			"capability_type" => "post",
+			"map_meta_cap" => true,
+			"hierarchical" => false,
+			"rewrite" => array( "slug" => "students", "with_front" => true ),
+			"query_var" => true,
+			"menu_icon" => "dashicons-welcome-learn-more",
+			"supports" => array( "title", "editor", "thumbnail", "excerpt" ),
+			"taxonomies" => array( "studies" ),
+		);
+		
+		register_post_type( "w18yb_student", $args );
+
+	}
+
+	/**
+	 * Adds filter to "the_content"
+	 *
+	 * @since    1.0.0
+	 */
+	public function register_filter_the_content() {
+		add_filter('the_content', [$this, 'filter_the_content']);
+	}
+
+	/**
+	 * manipulates "the_content" based on cpt
+	 * 
+	 * @since    1.0.0
+	 */
+
+	public function filter_the_content($content){
+		// metadata array:
+		$metadata = [];
+		
+		// only alter "the_content" if a it's certain post type:
+		if(get_post_type() == 'w18yb_student'){
+
+			// adds the taxonomies for that post type:
+			$taxonomies = get_the_term_list($post->ID, 'studies', '<div class="w18yb-taxonomies">Studies: ', ', ', '</div>');
+			array_push($metadata, $taxonomies);
+			
+			// adds html and content from a spesific custom field:
+			if(get_field('attendance') || get_field('detention_hours')){
+				$output = '<div class="w18yb-metadata">';
+				$output .= '<h1>'. __('Metadata: ', 'wcms18-year-book') .'</h1>';
+				
+				if(get_field('attendance')){
+					$output .= sprintf(
+						__('Attendance: ', 'wcms18-year-book') . '%s &#37<br>',
+						get_field('attendance')
+					);
+				}
+
+				if(get_field('detention_hours')){
+					$output .= sprintf(
+						__('Detention: ', 'wcms18-year-book') . '%s' . __(' hours ', 'wcms18-year-book'),
+						get_field('detention_hours')
+					);
+				}
+				$output .= '</div>';
+				array_push($metadata, $output);
+				
+			}
+			$content .= implode("", $metadata);
+		}
+		return $content;
+	}
+
+	/**
+	 * show/hide the dashboard option
+	 *
+	 * @since    1.0.0
+	 */
+	public function add_acf_init() {
+		// (Optional) Hide the ACF admin menu item.
+		add_filter('acf/settings/show_admin', function(){
+			return false;
+		});			
+	}
+	
 
 	/**
 	 * Run the loader to execute all of the hooks with WordPress.
