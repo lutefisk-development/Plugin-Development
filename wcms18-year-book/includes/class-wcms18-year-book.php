@@ -79,6 +79,9 @@ class Wcms18_Year_Book {
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
 
+		//register widget
+		$this->register_widget();
+
 		$this->register_filter_the_content();
 		$this->add_action_init();
 		
@@ -111,6 +114,11 @@ class Wcms18_Year_Book {
 		 * core plugin.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wcms18-year-book-loader.php';
+
+				/**
+		 * The class responsible for the widget of the plugin 
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wcms18-year-book-widget.php';
 
 		/**
 		 * The class responsible for defining internationalization functionality
@@ -186,6 +194,16 @@ class Wcms18_Year_Book {
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 
+	}
+
+	/**
+	 * Register the widget
+	 * @since    1.0.0
+	 */
+	public function register_widget() {
+		add_action('widgets_init', function(){
+			register_widget('Wcms18_Year_Book_Widget');
+		});
 	}
 
 	/**
@@ -298,7 +316,7 @@ class Wcms18_Year_Book {
 		if(get_post_type() == 'w18yb_student'){
 
 			// adds the taxonomies for that post type:
-			$taxonomies = get_the_term_list($post->ID, 'studies', '<div class="w18yb-taxonomies">Studies: ', ', ', '</div>');
+			$taxonomies = get_the_term_list($post->ID, 'studies', '<div class="w18yb-taxonomies"><span>' . __('Studies: ', 'wcms18-year-book') . '</span>', ', ', '</div>');
 			array_push($metadata, $taxonomies);
 			
 			// adds html and content from a spesific custom field:
@@ -308,14 +326,14 @@ class Wcms18_Year_Book {
 				
 				if(get_field('attendance')){
 					$output .= sprintf(
-						__('Attendance: ', 'wcms18-year-book') . '%s &#37<br>',
+						'<p><span>' . __('Attendance: ', 'wcms18-year-book') . '</span> %s &#37</p>',
 						get_field('attendance')
 					);
 				}
 
 				if(get_field('detention_hours')){
 					$output .= sprintf(
-						__('Detention: ', 'wcms18-year-book') . '%s' . __(' hours ', 'wcms18-year-book'),
+						'<p><span>' . __('Detention: ', 'wcms18-year-book') . ' </span>%s' . __(' hours </p>', 'wcms18-year-book'),
 						get_field('detention_hours')
 					);
 				}

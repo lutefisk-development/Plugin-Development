@@ -1,0 +1,16 @@
+/**
+ * All of the CSS for your public-facing functionality should be
+ * included in this file.
+ */
+
+#wcms18-mappy-weather .error {
+	background-color: #f00;
+	color: #fff;
+	font-weight: bold;
+	padding: 1rem 1.5rem;
+}
+
+#wcms18-mappy-weather #map {
+	background-color: #ddd;
+	height: 67vh;
+}
