@@ -114,4 +114,4 @@ class Spotify_New_Releases_Widget extends WP_Widget
         return $instance;
     }
 
-} // class StarWarsWidget
+} // class Spotify_New_Releases_Widget
