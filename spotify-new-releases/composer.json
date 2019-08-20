@@ -1,0 +1,12 @@
+{
+    "name": "lutefisk/spotify-new-releases",
+    "authors": [
+        {
+            "name": "Per Kristian Svanberg",
+            "email": "kristiansvanberg@gmail.com"
+        }
+    ],
+    "require": {
+        "jwilsson/spotify-web-api-php": "^2.9"
+    }
+}

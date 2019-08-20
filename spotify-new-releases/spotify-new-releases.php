@@ -63,7 +63,12 @@ register_deactivation_hook(__FILE__, 'deactivate_spotify_new_releases');
 /**
  * The credentials needed for Spotify web API.
  */
-require plugin_dir_path(__FILE__) . 'credentials.php';
+require plugin_dir_path(__FILE__) . '/credentials.php';
+
+/**
+ * Autoload composer packages
+ */
+require plugin_dir_path(__FILE__) . '/vendor/autoload.php';
 
 /**
  * The core plugin class that is used to define internationalization,

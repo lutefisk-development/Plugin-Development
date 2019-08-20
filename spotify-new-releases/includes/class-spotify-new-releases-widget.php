@@ -49,7 +49,7 @@ class Spotify_New_Releases_Widget extends WP_Widget
 				<marquee behavior="alternate" direction=""><em><strong>Loading ... </strong></em></marquee>
 			</div>
 
-		<?php
+        <?php
 
         // close widget
         echo $after_widget;
