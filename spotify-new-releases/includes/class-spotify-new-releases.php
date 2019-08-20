@@ -83,6 +83,8 @@ class Spotify_New_Releases
 
         $this->register_widget();
 
+        $this->register_ajax_actions();
+
     }
 
     /**
@@ -203,6 +205,56 @@ class Spotify_New_Releases
         add_action('widgets_init', function () {
             register_widget('Spotify_New_Releases_Widget');
         });
+    }
+
+    /**
+     * Register the ajax actions
+     * @since    1.0.0
+     */
+    public function register_ajax_actions()
+    {
+        // register action 'spotify_new_releases__get'
+        add_action('wp_ajax_spotify_new_releases__get', [
+            $this,
+            'ajax_spotify_new_releases__get',
+        ]);
+        add_action('wp_ajax_nopriv_spotify_new_releases__get', [
+            $this,
+            'ajax_spotify_new_releases__get',
+        ]);
+    }
+
+    /**
+     * Respond to ajax action 'spotify_new_releases__get'
+     */
+    public function ajax_spotify_new_releases__get()
+    {
+
+        $response = new SpotifyAPI(
+            SPOTIFY_NEW_RELEASES_CLIENT_ID,
+            SPOTIFY_NEW_RELEASES_CLIENT_SECRET
+        );
+
+        $body = $response->getNewReleases();
+
+        wp_send_json_success([
+            'release_one_artist' => $body->albums->items[0]->artists[0]->name,
+            'release_one_album_type' => $body->albums->items[0]->album_type,
+            'release_one_album_name' => $body->albums->items[0]->name,
+            'release_one_url' => $body->albums->items[0]->external_urls->spotify,
+            'release_one_image' => $body->albums->items[0]->images[1]->url,
+            'release_two_artist' => $body->albums->items[1]->artists[0]->name,
+            'release_two_album_type' => $body->albums->items[1]->album_type,
+            'release_two_album_name' => $body->albums->items[1]->name,
+            'release_two_url' => $body->albums->items[1]->external_urls->spotify,
+            'release_two_image' => $body->albums->items[1]->images[1]->url,
+            'release_three_artist' => $body->albums->items[2]->artists[0]->name,
+            'release_three_album_type' => $body->albums->items[2]->album_type,
+            'release_three_album_name' => $body->albums->items[2]->name,
+            'release_three_url' => $body->albums->items[2]->external_urls->spotify,
+            'release_three_image' => $body->albums->items[2]->images[1]->url,
+        ]);
+
     }
 
     /**

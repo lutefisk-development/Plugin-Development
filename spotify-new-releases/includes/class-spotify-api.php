@@ -37,7 +37,7 @@ class SpotifyAPI
         $api = new SpotifyWebAPI\SpotifyWebAPI();
         $api->setAccessToken($this->getAccessToken());
 
-        $new_releases = $api->getNewReleases(['country' => 'SE']);
-        var_dump($new_releases);
+        // getting the 3 latest releases from Sweden.
+        return $api->getNewReleases(['country' => 'SE', 'limit' => 3]);
     }
 }
