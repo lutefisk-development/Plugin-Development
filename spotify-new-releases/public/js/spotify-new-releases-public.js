@@ -8,57 +8,42 @@
 					let output = "";
 					if (response) {
 						output += "<h1>Album One</h1>";
+						output += "<p>Artist: " + response.data["album_one"][0] + "</p>";
 						output +=
-							"<p>Artist: " + response.data["release_one_artist"] + "</p>";
+							"<p>Album name: " + response.data["album_one"][2] + "</p>";
 						output +=
-							"<p>Album name: " +
-							response.data["release_one_album_name"] +
-							"</p>";
-						output +=
-							"<p>Album type: " +
-							response.data["release_one_album_type"] +
-							"</p>";
+							"<p>Album type: " + response.data["album_one"][1] + "</p>";
 						output +=
 							"<a href=" +
-							response.data["release_one_url"] +
+							response.data["album_one"][3] +
 							"><img src=" +
-							response.data["release_one_image"] +
+							response.data["album_one"][4] +
 							"></a><br>";
 						output += "<hr>";
 						output += "<h1>Album Two</h1>";
+						output += "<p>Artist: " + response.data["album_two"][0] + "</p>";
 						output +=
-							"<p>Artist: " + response.data["release_two_artist"] + "</p>";
+							"<p>Album name: " + response.data["album_two"][2] + "</p>";
 						output +=
-							"<p>Album name: " +
-							response.data["release_two_album_name"] +
-							"</p>";
-						output +=
-							"<p>Album type: " +
-							response.data["release_two_album_type"] +
-							"</p>";
+							"<p>Album type: " + response.data["album_two"][1] + "</p>";
 						output +=
 							"<a href=" +
-							response.data["release_two_url"] +
+							response.data["album_two"][3] +
 							"><img src=" +
-							response.data["release_two_image"] +
+							response.data["album_two"][4] +
 							"></a><br>";
 						output += "<hr>";
 						output += "<h1>Album Three</h1>";
+						output += "<p>Artist: " + response.data["album_three"][0] + "</p>";
 						output +=
-							"<p>Artist: " + response.data["release_three_artist"] + "</p>";
+							"<p>Album name: " + response.data["album_three"][2] + "</p>";
 						output +=
-							"<p>Album name: " +
-							response.data["release_three_album_name"] +
-							"</p>";
-						output +=
-							"<p>Album type: " +
-							response.data["release_three_album_type"] +
-							"</p>";
+							"<p>Album type: " + response.data["album_three"][1] + "</p>";
 						output +=
 							"<a href=" +
-							response.data["release_three_url"] +
+							response.data["album_three"][3] +
 							"><img src=" +
-							response.data["release_three_image"] +
+							response.data["album_three"][4] +
 							"></a>";
 					} else {
 						if (response.data == 404) {

@@ -237,22 +237,41 @@ class Spotify_New_Releases
 
         $body = $response->getNewReleases();
 
+        $album_one = [];
+        $album_two = [];
+        $album_three = [];
+
+        array_push(
+            $album_one,
+            $body->albums->items[0]->artists[0]->name,
+            $body->albums->items[0]->album_type,
+            $body->albums->items[0]->name,
+            $body->albums->items[0]->external_urls->spotify,
+            $body->albums->items[0]->images[1]->url
+        );
+
+        array_push(
+            $album_two,
+            $body->albums->items[1]->artists[0]->name,
+            $body->albums->items[1]->album_type,
+            $body->albums->items[1]->name,
+            $body->albums->items[1]->external_urls->spotify,
+            $body->albums->items[1]->images[1]->url
+        );
+
+        array_push(
+            $album_three,
+            $body->albums->items[2]->artists[0]->name,
+            $body->albums->items[2]->album_type,
+            $body->albums->items[2]->name,
+            $body->albums->items[2]->external_urls->spotify,
+            $body->albums->items[2]->images[1]->url
+        );
+
         wp_send_json_success([
-            'release_one_artist' => $body->albums->items[0]->artists[0]->name,
-            'release_one_album_type' => $body->albums->items[0]->album_type,
-            'release_one_album_name' => $body->albums->items[0]->name,
-            'release_one_url' => $body->albums->items[0]->external_urls->spotify,
-            'release_one_image' => $body->albums->items[0]->images[1]->url,
-            'release_two_artist' => $body->albums->items[1]->artists[0]->name,
-            'release_two_album_type' => $body->albums->items[1]->album_type,
-            'release_two_album_name' => $body->albums->items[1]->name,
-            'release_two_url' => $body->albums->items[1]->external_urls->spotify,
-            'release_two_image' => $body->albums->items[1]->images[1]->url,
-            'release_three_artist' => $body->albums->items[2]->artists[0]->name,
-            'release_three_album_type' => $body->albums->items[2]->album_type,
-            'release_three_album_name' => $body->albums->items[2]->name,
-            'release_three_url' => $body->albums->items[2]->external_urls->spotify,
-            'release_three_image' => $body->albums->items[2]->images[1]->url,
+            'album_one' => $album_one,
+            'album_two' => $album_two,
+            'album_three' => $album_three,
         ]);
 
     }
